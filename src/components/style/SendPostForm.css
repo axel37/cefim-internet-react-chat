@@ -1,9 +1,14 @@
-form {
+section.write {
     margin-top: 2rem;
     margin-bottom: 2rem;
+    text-align: center;
+}
+
+form {
     display: flex;
     align-items: flex-start;
     justify-content: center;
+    margin-bottom: 1rem;
 }
 
 input[type=text], textarea {
@@ -14,22 +19,15 @@ input[type=text], textarea {
 }
 
 input[type=text] {
-    color: orange;
+    color: var(--name-color);
     width: 8.6rem;
     text-align: right;
 }
 
 .name-separator {
-    color: orange;
+    color: var(--name-color);
 }
 
 textarea {
     resize: none;
-}
-
-button {
-    border: none;
-    padding: 0;
-    background: none;
-    text-decoration: underline;
 }

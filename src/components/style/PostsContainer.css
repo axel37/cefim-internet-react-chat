@@ -1,4 +1,4 @@
-section {
+section.read {
     display: flex;
     flex-direction: column-reverse;
     gap: 2rem;

@@ -1,7 +1,7 @@
 header {
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
     text-align: center;
+    margin-top: 2rem;
+    margin-bottom: 4rem;
 
     background-color: white;
 }

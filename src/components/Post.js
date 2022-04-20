@@ -1,5 +1,3 @@
-// TODO : Post
-
 /*
     This is the post component.
     It should display its text, and the name of its author.
@@ -30,10 +28,22 @@ import avatar from '../avatar.png';
 
 export default class Post extends React.Component {
 
+
+    constructor(props, context)
+    {
+        super(props, context);
+        this.state = {
+            "isLiked": localStorage.getItem("liked-post-" + this.props.id),
+            "showImage": this.props.showImage
+        }
+    }
+
     render()
     {
         const {name, message, ts, likes, comments_count, is_user_authenticated} = this.props;
+        const {isLiked} = this.state;
         const postClass = is_user_authenticated ? "post authenticated" : "post"
+        const likeClass = isLiked ? "post-likes liked" : "post-likes";
 
         const dateString = new Date(ts).toLocaleDateString();
         const timeString = new Date(ts).toLocaleTimeString();
@@ -43,20 +53,18 @@ export default class Post extends React.Component {
                 <div className="post-meta">
                     <p className="post-name">{name}</p>
                     <div className="post-meta-group-bottom">
-                        <img src={avatar}/>
+                        {
+                            this.state.showImage && <img src={avatar} alt={name + "'s profile picture"}/>
+                        }
                         <div className="post-meta-group-bottom-text">
                             <time dateTime={ts}>
                                 <span>{dateString}</span>
                                 <span>{timeString}</span>
                             </time>
-                            <p className="post-likes">{likes}</p>
-                            <p className="post-comments">{comments_count}</p>
+                            <button className={likeClass} onClick={this.likePost}>Like : {likes}</button>
+                            <button className="post-comments">Comment : {comments_count}</button>
                         </div>
                     </div>
-                    {
-                        // Like
-                        // Comment
-                    }
                 </div>
 
                 <p className="post-message">
@@ -64,6 +72,17 @@ export default class Post extends React.Component {
                 </p>
             </article>
         );
+    }
+
+    likePost = () => {
+        // TODO : Need an API call
+        const newState = !this.state.isLiked;
+        localStorage.setItem("liked-post-" + this.props.id, newState);
+        this.setState(
+        {
+                "isLiked": newState
+            }
+            );
     }
 
 }

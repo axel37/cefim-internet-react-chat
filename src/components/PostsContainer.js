@@ -1,5 +1,3 @@
-// TODO : PostsContainer
-
 /*
     This component contains multiple Post children.
     (Hint : .map)
@@ -16,9 +14,10 @@ export default class PostsContainer extends React.Component {
     render()
     {
         return(
-            <section>
+            <section className="read">
+                <h2 className="hidden">Read posts</h2>
                 {
-                    fakePosts.messages.map(post => <Post key={post.id} {...post} />)
+                    fakePosts.messages.map(post => <Post key={post.id} {...post} showImage={true} />)
                 }
             </section>
 

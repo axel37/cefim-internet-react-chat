@@ -7,8 +7,8 @@
 
 .post img {
     display: none;
-    width: 7.5rem;
-    height: 7.5rem;
+    max-width: 7.5rem;
+    max-height: 7.5rem;
 
     filter: grayscale(100%);
 }
@@ -34,11 +34,11 @@
 }
 
 .post-name {
-    color: orange;
+    color: var(--name-color);
 }
 
 .authenticated .post-name {
-    color: palegreen;
+    color: var(--verified-color);
 }
 
 .authenticated img {
@@ -47,11 +47,11 @@
 
 .post-name::after {
     content: ">";
-
 }
 
 .post-message {
     display: inline;
+    font-family: monospace;
 }
 
 time {
@@ -61,5 +61,21 @@ time {
 }
 
 time * {
-    color: #7c7c7c ;
+    color: var(--dim-color);
+}
+
+.post-like, .post-comments {
+    display: block;
+}
+
+.post-likes:hover, .post-comments:hover {
+    color: var(--dim-color);
+}
+
+.liked {
+    color: var(--good-color);
+}
+
+.liked:hover {
+    color: var(--bad-color);
 }

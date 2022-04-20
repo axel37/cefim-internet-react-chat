@@ -1,13 +1,38 @@
 :root {
-  --border-radius: 0.25rem;
+  --text-color: white;
+  --name-color: orange;
+  --verified-color: palegreen;
+  --dim-color: #7c7c7c;
+  --good-color: green;
+  --bad-color: red;
+
+  --text-glow-x: 0rem;
+  --text-glow-y: 0rem;
+  --text-glow-blur: 0.25rem;
+  --text-glow: var(--text-glow-x) var(--text-glow-y) var(--text-glow-blur);
+
+  --background-color: #111;
+
   font-family: monospace;
-   font-size: clamp(0.8125rem, 2vw, 1.1875rem);
+  font-size: clamp(0.8125rem, 2vw, 1.1875rem);
 }
 
 * {
-  background-color: #111;
-  color: white;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  text-shadow: var(--text-glow);
   /*outline: 1px solid red;*/
+}
+
+
+
+:focus-visible {
+  outline: 1px dashed var(--text-color);
+}
+
+:focus:not(:focus-visible)
+{
+  outline: none;
 }
 
 .container {
@@ -18,4 +43,24 @@
 
 button {
   cursor: pointer;
+  border: none;
+  padding: 0;
+  background: none;
+  text-decoration: underline;
+}
+
+.info{
+  color: var(--dim-color);
+}
+
+.error {
+  color: var(--bad-color);
+}
+
+.success {
+  color: var(--good-color);
+}
+
+.hidden {
+  display: none;
 }

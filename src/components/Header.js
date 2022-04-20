@@ -1,5 +1,3 @@
-// TODO : Header
-
 /*
     This is the header component.
     It should contain a title and / or a logo
