@@ -34,7 +34,7 @@ export default class Post extends React.Component {
         super(props, context);
         this.state = {
             "isLiked": localStorage.getItem("liked-post-" + this.props.id),
-            "showImage": this.props.showImage
+            "showImage": this.props.showImages
         }
     }
 

@@ -17,7 +17,7 @@ export default class PostsContainer extends React.Component {
             <section className="read">
                 <h2 className="hidden">Read posts</h2>
                 {
-                    fakePosts.messages.map(post => <Post key={post.id} {...post} showImage={true} />)
+                    fakePosts.messages.map(post => <Post key={post.id} {...post} showImages={true}/>)
                 }
             </section>
 

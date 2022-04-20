@@ -15,6 +15,9 @@ export default class Header extends React.Component {
 
             <header>
                 <h1>Touitteur / React</h1>
+                <label>
+                    <input type="checkbox"/>
+                </label>Images
             </header>
 
         );

@@ -5,11 +5,33 @@ section.write {
 }
 
 form {
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: 9.5rem 1fr;
+    gap: 0.75rem;
+    /*align-items: flex-start;*/
+    /*justify-content: center;*/
     margin-bottom: 1rem;
 }
+
+.group-name-button {
+    text-align: end;
+}
+
+.group-name {
+    display: flex;
+    justify-content: end;
+}
+
+.group-message {
+    display: flex;
+}
+
+@media screen and (min-width: 61rem) {
+    form {
+        grid-template-columns: 20rem 1fr;
+    }
+}
+
 
 input[type=text], textarea {
     border: none;
@@ -29,5 +51,6 @@ input[type=text] {
 }
 
 textarea {
+    font-family: monospace;
     resize: none;
 }

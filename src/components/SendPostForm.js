@@ -25,12 +25,19 @@ export default class SendPostForm extends React.Component {
             <section className="write">
                 <h2 className="hidden">Send a post</h2>
                 <form action="" method="post" onSubmit={this.sendPost}>
-                    <input type="text" minLength={3} maxLength={16} placeholder={"type name here"} name="name"/>
-                    <span className="name-separator">>&nbsp;</span>
-                    <textarea minLength={3} maxLength={256} name="message" placeholder="type message here" onChange={this.resize}/>
+                    <div className="group-name-button">
+                        <div className="group-name">
+                            <input type="text" minLength={3} maxLength={16} placeholder="Name" name="name"/>
+                            <span className="name-separator">></span>
+                        </div>
                     <button type="submit">> Send</button>
+                    <p className={this.infoTextClass}>{this.state.infoText}</p>
+                    </div>
+
+                        <textarea minLength={3} maxLength={256} name="message" placeholder="Message" onChange={this.resize}/>
+
                 </form>
-                <p className={this.infoTextClass}>{this.state.infoText}</p>
+
             </section>
         );
     }
@@ -58,12 +65,12 @@ export default class SendPostForm extends React.Component {
         }
         else
         {
-            console.warn("Invalid input !");
-            this.setInfoText("error", "Invalid Input !");
+            this.setInfoText("error", "Invalid input !");
         }
     }
 
     setInfoText = (type, text) => {
+        console.info("Send Post form : " + text);
         this.infoTextClass = "formInfo " + type;
         this.setState({
             "infoText": text
