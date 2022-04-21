@@ -6,7 +6,7 @@ import PostsContainer from "./components/PostsContainer";
 import SendPostForm from "./components/SendPostForm";
 
 class App extends React.Component {
-        render()
+    render()
     {
         return (
             <div className="App">

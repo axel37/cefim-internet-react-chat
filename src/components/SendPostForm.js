@@ -6,6 +6,7 @@
 
 import React from "react";
 import './style/SendPostForm.css';
+import {sendPost} from "../api/PostApi";
 
 export default class SendPostForm extends React.Component {
     // Class given to information message
@@ -56,17 +57,26 @@ export default class SendPostForm extends React.Component {
         evt.preventDefault();
 
         const name = evt.target[0].value.trim();
-        const message = evt.target[1].value.trim();
+        const message = evt.target[2].value.trim();
 
-        if (name.length >= 3 && name.length <=16 && message.length >=3 && message.length <= 256)
+        if (name.length >= 3 && name.length <= 16 && message.length >= 3 && message.length <= 256)
         {
-            console.log(name);
-            console.log(message);
+            sendPost(name, message, this.onPostSent, this.onPostSendFailure);
         }
         else
         {
             this.setInfoText("error", "Invalid input !");
         }
+    }
+
+    onPostSent = data => {
+        console.info(data);
+        this.setInfoText("success", "Your message was sent !");
+    }
+
+    onPostSendFailure = message => {
+        console.warn(message);
+        this.setInfoText("error", message);
     }
 
     setInfoText = (type, text) => {

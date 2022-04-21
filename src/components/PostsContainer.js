@@ -5,11 +5,20 @@
  */
 
 import React from "react";
-import fakePosts from "../fakePosts";
 import './style/PostsContainer.css';
 import Post from "./Post";
+import {listPosts} from "../api/PostApi";
 
 export default class PostsContainer extends React.Component {
+    lastTimeStamp = 1650539853886;
+
+    constructor(props, context)
+    {
+        super(props, context);
+        this.state = {
+            "messages": []
+        };
+    }
 
     render()
     {
@@ -17,10 +26,31 @@ export default class PostsContainer extends React.Component {
             <section className="read">
                 <h2 className="hidden">Read posts</h2>
                 {
-                    fakePosts.messages.map(post => <Post key={post.id} {...post} showImages={true}/>)
+                    this.state.messages.map(post => <Post key={post.id} {...post} showImages={true}/>)
                 }
             </section>
 
         );
     }
+
+    componentDidMount = () =>
+    {
+        listPosts(this.lastTimeStamp, this.onPostsRetrieved, this.onPostsRetrievalFailure)
+    }
+
+    onPostsRetrieved = data =>
+    {
+        console.log(data);
+        this.lastTimeStamp = data.ts;
+        this.setState({
+            "messages": data.messages
+        })
+
+    }
+
+    onPostsRetrievalFailure = message =>
+    {
+        console.warn(message);
+    }
+
 }
