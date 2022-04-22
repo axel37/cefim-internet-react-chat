@@ -25,9 +25,12 @@
 }
 
 
-
+/*
+  TODO : Find a way to hide focus box on click / show only on tab
+ */
 :focus-visible {
   outline: 1px dashed var(--text-color);
+
 }
 
 :focus:not(:focus-visible)

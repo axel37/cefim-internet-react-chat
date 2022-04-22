@@ -11,6 +11,7 @@ import {sendPost} from "../api/PostApi";
 export default class SendPostForm extends React.Component {
     // Class given to information message
     infoTextClass = "formInfo info";
+    infoTextTimeout;
 
     constructor(props, context)
     {
@@ -61,7 +62,7 @@ export default class SendPostForm extends React.Component {
 
         if (name.length >= 3 && name.length <= 16 && message.length >= 3 && message.length <= 256)
         {
-            sendPost(name, message, this.onPostSent, this.onPostSendFailure);
+            sendPost(name, message, data => this.onPostSent(data, evt.target), this.onPostSendFailure);
         }
         else
         {
@@ -69,21 +70,33 @@ export default class SendPostForm extends React.Component {
         }
     }
 
-    onPostSent = data => {
-        console.info(data);
+    // Show success message and clear the form
+    onPostSent = (data, form) => {
+        console.info("Sent post with id " + data.id);
+        form[2].value = "";
         this.setInfoText("success", "Your message was sent !");
     }
 
+    // Show error message
     onPostSendFailure = message => {
         console.warn(message);
         this.setInfoText("error", message);
     }
 
+    // Display some information and set its style
     setInfoText = (type, text) => {
         console.info("Send Post form : " + text);
         this.infoTextClass = "formInfo " + type;
         this.setState({
             "infoText": text
-        })
+        }, this.hideInfoText);
+    }
+    // Clear infoText after a few seconds
+    hideInfoText = () => {
+        if (this.infoTextTimeout !== undefined)
+        {
+            clearTimeout(this.infoTextTimeout);
+        }
+        this.infoTextTimeout = setTimeout(() => this.setState({"infoText": ""}), 5000);
     }
 }

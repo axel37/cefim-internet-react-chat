@@ -1,5 +1,9 @@
-section.read {
+.posts-container {
     display: flex;
     flex-direction: column-reverse;
     gap: 2rem;
+}
+
+.listInfo {
+    text-align: center;
 }

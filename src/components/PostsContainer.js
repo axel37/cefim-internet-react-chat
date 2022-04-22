@@ -10,47 +10,92 @@ import Post from "./Post";
 import {listPosts} from "../api/PostApi";
 
 export default class PostsContainer extends React.Component {
+    autoReloadIntervalId;
+    autoReloadInterval = 10000; // Set this to 1000 for almost-real-time refreshing ! Set this to 1 for real-time refreshing !
+    isRetrievalInProgress = false;
     lastTimeStamp = 1650539853886;
+
+    // Class given to information message
+    infoTextClass = "listInfo info";
+    infoTextTimeout;
 
     constructor(props, context)
     {
         super(props, context);
         this.state = {
-            "messages": []
+            "messages": [],
+            "infoText": "Loading..."
         };
     }
+
+    // TODO : Load images only when visible + post refresh when entering screen
 
     render()
     {
         return(
             <section className="read">
                 <h2 className="hidden">Read posts</h2>
+                <p className={this.infoTextClass}>{this.state.infoText}</p>
+                <div className="posts-container">
                 {
                     this.state.messages.map(post => <Post key={post.id} {...post} showImages={true}/>)
                 }
+                </div>
             </section>
 
         );
     }
 
+    retrievePosts = () =>
+    {
+        if (!this.isRetrievalInProgress)
+        {
+            listPosts(this.lastTimeStamp, this.onPostsRetrieved, this.onPostsRetrievalFailure);
+            this.isRetrievalInProgress = true;
+        }
+
+    }
+
     componentDidMount = () =>
     {
-        listPosts(this.lastTimeStamp, this.onPostsRetrieved, this.onPostsRetrievalFailure)
+        this.retrievePosts();
+        this.autoReloadIntervalId = setInterval(() => this.retrievePosts(), this.autoReloadInterval);
     }
 
     onPostsRetrieved = data =>
     {
-        console.log(data);
+        this.isRetrievalInProgress = false;
         this.lastTimeStamp = data.ts;
+
         this.setState({
-            "messages": data.messages
-        })
+            "messages": this.state.messages.concat(data.messages),
+        });
+
+        this.setInfoText("", "");
 
     }
 
     onPostsRetrievalFailure = message =>
     {
         console.warn(message);
+        this.setInfoText("error", "message");
+    }
+
+    // Display some information and set its style
+    setInfoText = (type, text) => {
+        console.info("Post container : " + text);
+        this.infoTextClass = "listInfo " + type;
+        this.setState({
+            "infoText": text
+        }, this.hideInfoText);
+    }
+    // Clear infoText after a few seconds
+    hideInfoText = () => {
+        if (this.infoTextTimeout !== undefined)
+        {
+            clearTimeout(this.infoTextTimeout);
+        }
+        this.infoTextTimeout = setTimeout(() => this.setState({"infoText": ""}), 5000);
     }
 
 }

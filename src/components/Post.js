@@ -25,23 +25,29 @@
 import React from "react";
 import './style/Post.css';
 import avatar from '../avatar.png';
+import {getPost, toggleLike} from "../api/PostApi";
 
 export default class Post extends React.Component {
-
+    // Class given to information message
+    infoTextClass = "postInfo info";
+    infoTextTimeout;
 
     constructor(props, context)
     {
         super(props, context);
         this.state = {
-            "isLiked": localStorage.getItem("liked-post-" + this.props.id),
-            "showImage": this.props.showImages
+            "isLiked": JSON.parse(localStorage.getItem("liked-post-" + this.props.id)),
+            "showImage": this.props.showImages,
+            "likeCount": this.props.likes,
+            "commentCount": this.props.comments_count,
+            "infoText": ""
         }
     }
 
     render()
     {
         const {name, message, ts, likes, comments_count, is_user_authenticated} = this.props;
-        const {isLiked} = this.state;
+        const {isLiked, likeCount, commentCount} = this.state;
         const postClass = is_user_authenticated ? "post authenticated" : "post"
         const likeClass = isLiked ? "post-likes liked" : "post-likes";
 
@@ -61,28 +67,67 @@ export default class Post extends React.Component {
                                 <span>{dateString}</span>
                                 <span>{timeString}</span>
                             </time>
-                            <button className={likeClass} onClick={this.likePost}>Like : {likes}</button>
-                            <button className="post-comments">Comment : {comments_count}</button>
+                            <button className={likeClass} onClick={this.likePost}>Like : {likeCount}</button>
+                            <button className="post-comments">Comment : {commentCount}</button>
                         </div>
                     </div>
+                    <p className={this.infoTextClass}>{this.state.infoText}</p>
                 </div>
 
-                <p className="post-message">
-                    {message}
-                </p>
+                <p className="post-message">{message}</p>
             </article>
         );
     }
 
     likePost = () => {
-        // TODO : Need an API call
         const newState = !this.state.isLiked;
         localStorage.setItem("liked-post-" + this.props.id, newState);
-        this.setState(
-        {
+        toggleLike(this.props.id, this.state.isLiked, this.onPostLiked, this.onPostLikeFailure)
+        this.setState({
                 "isLiked": newState
-            }
-            );
+            });
+    }
+
+    onPostLiked = data => {
+        this.updatePost();
+    }
+
+    onPostLikeFailure = message => {
+        console.warn("Error when liking post " + this.props.id + " : " + message);
+        this.setInfoText("error", message);
+    }
+
+    updatePost = () => {
+        getPost(this.props.id, this.onPostUpdated, this.onPostUpdateFailed)
+    }
+
+    onPostUpdated = data => {
+        this.setState({
+            "likeCount" : data.data.likes,
+            "commentCount": data.data.comments_count
+        })
+    }
+
+    onPostUpdateFailed = message => {
+        console.warn("Error while updating post " + this.props.id + " : " + message);
+        this.setInfoText("error", message);
+    }
+
+    // Display some information and set its style
+    setInfoText = (type, text) => {
+        console.info("Post " + this.props.id + " : " + text);
+        this.infoTextClass = "postInfo " + type;
+        this.setState({
+            "infoText": text
+        }, this.hideInfoText);
+    }
+    // Clear infoText after a few seconds
+    hideInfoText = () => {
+        if (this.infoTextTimeout !== undefined)
+        {
+            clearTimeout(this.infoTextTimeout);
+        }
+        this.infoTextTimeout = setTimeout(() => this.setState({"infoText": ""}), 5000);
     }
 
 }

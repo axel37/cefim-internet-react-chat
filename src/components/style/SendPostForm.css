@@ -40,6 +40,14 @@ input[type=text], textarea {
     height: 1.5rem;
 }
 
+/*
+    Disable default focus effect on text inputs
+    (not great for accessibility !)
+ */
+input[type=text]:focus, textarea:focus {
+    outline: none;
+}
+
 input[type=text] {
     color: var(--name-color);
     width: 8.6rem;

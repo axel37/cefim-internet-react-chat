@@ -1,5 +1,3 @@
-// TODO : PostApi
-
 /*
     This file can either be a class or a list of functions.
     It is in charge of communicating with the API through AJAX requests.
@@ -7,14 +5,10 @@
     This file will implement methods such as sendPost.
  */
 
-/*
-    TODO : Write down API "rules" here (such as "name : 3-16 characters, message : 3-256 characters")
- */
-
 import ApiUrl from "../ApiUrl";
 import apiUrl from "../ApiUrl";
 
-export {listPosts, sendPost, getPost, listTrends};
+export {listPosts, sendPost, getPost, listTrends, toggleLike};
 
 
 /*
@@ -81,7 +75,7 @@ function sendPost(name, message, onSuccess, onError) {
 
     if (author.length >= 3 && author.length <= 16 && post.length >= 3 && post.length <= 256)
     {
-        apiPOST("/send", {"name": author, "message": post}, onSuccess, onError)
+        apiREQUEST("POST", "/send", {"name": author, "message": post}, onSuccess, onError)
     }
 }
 
@@ -161,6 +155,27 @@ function listInfluencers(count, onSuccess, onError) {
 
 }
 
+// Adds or removes a Like to specified post
+function toggleLike(id, isLiked, onSuccess, onError) {
+    const postId = Number(id);
+    if (postId < 0 || !Number.isInteger(postId))
+    {
+        onError("Provided id needs to be an positive integer.")
+        return false;
+    }
+
+    console.log("Toggling like. Current state : " + isLiked);
+
+    if (isLiked)
+    {
+        removeLike(postId, onSuccess, onError);
+    }
+    else
+    {
+        addLike(postId, onSuccess, onError);
+    }
+}
+
 /*
     Add a like to a post
 
@@ -177,8 +192,8 @@ function listInfluencers(count, onSuccess, onError) {
     Response (error) : Object :
         - error [string] : Error message.
  */
-function addLike(id) {
-
+function addLike(id, onSuccess, onError) {
+    apiREQUEST("PUT", "/likes/send", {"message_id": id}, onSuccess, onError);
 }
 
 
@@ -197,8 +212,8 @@ function addLike(id) {
     Response (error) : Object :
         - error [string] : Error message.
  */
-function removeLike(id) {
-
+function removeLike(id, onSuccess, onError) {
+    apiREQUEST("DELETE", "/likes/remove", {"message_id": id}, onSuccess, onError);
 }
 
 /*
@@ -299,13 +314,13 @@ function apiGET(endPoint, paramsObj, onSuccess, onError)
     - onSuccess : Called on fetch success. Function is passed the response json.
     - onError. Called on fetch failure. Function is passed error message.
 */
-function apiPOST(endPoint, paramsObj, onSuccess, onError)
+function apiREQUEST(method, endPoint, paramsObj, onSuccess, onError)
 {
     // Request setup
     const resourceUrl = ApiUrl + endPoint;
     const paramString = buildRequestString(endPoint, paramsObj, "POST");
     const fetchOptions = {
-        "method": "POST",
+        "method": method.toUpperCase(),
         "headers": {"Content-Type" : "application/x-www-form-urlencoded"},
         "body": paramString
     };
