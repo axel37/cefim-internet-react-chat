@@ -14,9 +14,9 @@ export default class Header extends React.Component {
         return(
 
             <header>
-                <h1>Touitteur / React</h1>
+                <h1>Internet React Chat</h1>
                 <label>
-                    <input type="checkbox"/>
+                    <input onChange={this.props.onImageClick} type="checkbox" checked={this.props.checked}/>
                 </label>Images
             </header>
 

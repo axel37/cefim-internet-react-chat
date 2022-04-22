@@ -26,27 +26,35 @@ import React from "react";
 import './style/Post.css';
 import avatar from '../avatar.png';
 import {getPost, toggleLike} from "../api/PostApi";
+import CommentsContainer from "./CommentsContainer";
 
 export default class Post extends React.Component {
     // Class given to information message
     infoTextClass = "postInfo info";
     infoTextTimeout;
 
+    comments = [
+        // {"name": "Randall", "comment": "What a wonderful comment !", "ts": 1650609209815},
+        // {"name": "Gabe", "comment": "Look at this !", "ts": 1650609209814},
+        // {"name": "Dario", "comment": "I love this post. It's so insightful, I had never though about things that way ! Thank you so much !", "ts": 1650609209813},
+        // {"name": "Eric", "comment": "Sup", "ts": 1650609209812}
+    ];
+
     constructor(props, context)
     {
         super(props, context);
         this.state = {
             "isLiked": JSON.parse(localStorage.getItem("liked-post-" + this.props.id)),
-            "showImage": this.props.showImages,
             "likeCount": this.props.likes,
             "commentCount": this.props.comments_count,
-            "infoText": ""
+            "infoText": "",
+            "showComments": false
         }
     }
 
     render()
     {
-        const {name, message, ts, likes, comments_count, is_user_authenticated} = this.props;
+        const {name, message, ts, is_user_authenticated} = this.props;
         const {isLiked, likeCount, commentCount} = this.state;
         const postClass = is_user_authenticated ? "post authenticated" : "post"
         const likeClass = isLiked ? "post-likes liked" : "post-likes";
@@ -55,26 +63,31 @@ export default class Post extends React.Component {
         const timeString = new Date(ts).toLocaleTimeString();
 
         return(
-            <article className={postClass}>
-                <div className="post-meta">
-                    <p className="post-name">{name}</p>
-                    <div className="post-meta-group-bottom">
-                        {
-                            this.state.showImage && <img src={avatar} alt={name + "'s profile picture"}/>
-                        }
-                        <div className="post-meta-group-bottom-text">
-                            <time dateTime={ts}>
-                                <span>{dateString}</span>
-                                <span>{timeString}</span>
-                            </time>
-                            <button className={likeClass} onClick={this.likePost}>Like : {likeCount}</button>
-                            <button className="post-comments">Comment : {commentCount}</button>
+            <article>
+                <div className={postClass}>
+                    <div className="post-meta">
+                        <p className="post-name">{name}</p>
+                        <div className="post-meta-group-bottom">
+                            {
+                                this.props.showImages && <img src={avatar} alt={name + "'s profile picture"}/>
+                            }
+                            <div className="post-meta-group-bottom-text">
+                                <time dateTime={ts}>
+                                    <span>{dateString}</span>
+                                    <span>{timeString}</span>
+                                </time>
+                                <button className={likeClass} onClick={this.likePost}>Like : {likeCount}</button>
+                                <button className="post-comments" onClick={this.toggleComments}>Comment : {commentCount}</button>
+                            </div>
                         </div>
+                        <p className={this.infoTextClass}>{this.state.infoText}</p>
                     </div>
-                    <p className={this.infoTextClass}>{this.state.infoText}</p>
+                    <p className="post-message">{message}</p>
                 </div>
+                {
+                    this.state.showComments && <CommentsContainer id={this.props.id} updatePost={this.updatePost}/>
+                }
 
-                <p className="post-message">{message}</p>
             </article>
         );
     }
@@ -86,6 +99,14 @@ export default class Post extends React.Component {
         this.setState({
                 "isLiked": newState
             });
+    }
+
+    toggleComments = () => {
+        const newState = !this.state.showComments;
+
+        this.setState({
+            "showComments": newState
+        });
     }
 
     onPostLiked = data => {

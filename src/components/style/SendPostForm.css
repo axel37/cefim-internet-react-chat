@@ -55,6 +55,7 @@ input[type=text] {
 }
 
 .name-separator {
+    user-select: none;
     color: var(--name-color);
 }
 

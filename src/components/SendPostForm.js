@@ -6,7 +6,6 @@
 
 import React from "react";
 import './style/SendPostForm.css';
-import {sendPost} from "../api/PostApi";
 
 export default class SendPostForm extends React.Component {
     // Class given to information message
@@ -36,7 +35,7 @@ export default class SendPostForm extends React.Component {
                     <p className={this.infoTextClass}>{this.state.infoText}</p>
                     </div>
 
-                        <textarea minLength={3} maxLength={256} name="message" placeholder="Message" onChange={this.resize}/>
+                    <textarea minLength={3} maxLength={256} name="message" placeholder={this.props.type} onChange={this.resize}/>
 
                 </form>
 
@@ -57,12 +56,12 @@ export default class SendPostForm extends React.Component {
     sendPost = evt => {
         evt.preventDefault();
 
-        const name = evt.target[0].value.trim();
-        const message = evt.target[2].value.trim();
+        const name = evt.target.name.value.trim();
+        const message = evt.target.message.value.trim();
 
         if (name.length >= 3 && name.length <= 16 && message.length >= 3 && message.length <= 256)
         {
-            sendPost(name, message, data => this.onPostSent(data, evt.target), this.onPostSendFailure);
+            this.props.submit(name, message, data => this.onPostSent(data, evt.target), this.onPostSendFailure, this.props.id);
         }
         else
         {
@@ -73,8 +72,12 @@ export default class SendPostForm extends React.Component {
     // Show success message and clear the form
     onPostSent = (data, form) => {
         console.info("Sent post with id " + data.id);
-        form[2].value = "";
-        this.setInfoText("success", "Your message was sent !");
+        form.message.value = ""; // TODO : BAD, use state
+        this.setInfoText("success", "Your " + this.props.type.toLowerCase() + " was sent !");
+        if (this.props.onSubmit !== undefined)
+        {
+            this.props.onSubmit();
+        }
     }
 
     // Show error message

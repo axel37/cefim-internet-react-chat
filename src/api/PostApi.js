@@ -8,7 +8,7 @@
 import ApiUrl from "../ApiUrl";
 import apiUrl from "../ApiUrl";
 
-export {listPosts, sendPost, getPost, listTrends, toggleLike};
+export {listPosts, sendPost, getPost, listTrends, toggleLike, getPostComments, sendComment};
 
 
 /*
@@ -76,6 +76,11 @@ function sendPost(name, message, onSuccess, onError) {
     if (author.length >= 3 && author.length <= 16 && post.length >= 3 && post.length <= 256)
     {
         apiREQUEST("POST", "/send", {"name": author, "message": post}, onSuccess, onError)
+    }
+    else
+    {
+        onError("Invalid input.");
+        return false;
     }
 }
 
@@ -261,8 +266,14 @@ function listTopPosts(count) {
     Response (error) : Object :
         - error [string] : Error message.
  */
-function getPostComments(message_id) {
-
+function getPostComments(message_id, onSuccess, onError) {
+    const postId = Number(message_id);
+    if (postId < 0 || !Number.isInteger(postId))
+    {
+        onError("Provided id needs to be an positive integer.")
+        return false;
+    }
+    apiGET("/comments/list", {"message_id": postId}, onSuccess, onError);
 }
 
 /*
@@ -284,8 +295,25 @@ function getPostComments(message_id) {
     Response (error) : Object :
         - error [string] : Error message.
  */
-function sendComment(message_id) {
+function sendComment(name, message, onSuccess, onError, message_id) {
+    const author = name.trim();
+    const post = message.trim();
+    const postId = Number(message_id);
+    if (postId < 0 || !Number.isInteger(postId))
+    {
+        onError("Provided id needs to be an positive integer.")
+        return false;
+    }
 
+    if (author.length >= 3 && author.length <= 16 && post.length >= 3 && post.length <= 256)
+    {
+        apiREQUEST("POST", "/comments/send", {"message_id": postId, "name": author, "comment": post}, onSuccess, onError)
+    }
+    else
+    {
+        onError("Invalid input.");
+        return false;
+    }
 }
 
 /*

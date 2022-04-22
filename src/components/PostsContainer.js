@@ -13,7 +13,7 @@ export default class PostsContainer extends React.Component {
     autoReloadIntervalId;
     autoReloadInterval = 10000; // Set this to 1000 for almost-real-time refreshing ! Set this to 1 for real-time refreshing !
     isRetrievalInProgress = false;
-    lastTimeStamp = 1650539853886;
+    lastTimeStamp = 1650609209815;
 
     // Class given to information message
     infoTextClass = "listInfo info";
@@ -38,7 +38,7 @@ export default class PostsContainer extends React.Component {
                 <p className={this.infoTextClass}>{this.state.infoText}</p>
                 <div className="posts-container">
                 {
-                    this.state.messages.map(post => <Post key={post.id} {...post} showImages={true}/>)
+                    this.state.messages.map(post => <Post key={post.id} {...post} showImages={this.props.showImages}/>)
                 }
                 </div>
             </section>
@@ -71,7 +71,10 @@ export default class PostsContainer extends React.Component {
             "messages": this.state.messages.concat(data.messages),
         });
 
-        this.setInfoText("", "");
+        if (this.state.infoText !== "")
+        {
+            this.setInfoText("", "");
+        }
 
     }
 
