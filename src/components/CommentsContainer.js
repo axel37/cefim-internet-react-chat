@@ -21,13 +21,13 @@ export default class CommentsContainer extends React.Component {
         const {comments} = this.state;
         return(
             <div className="comments-container">
-                <SendPostForm onSubmit={this.updateComments} submit={sendComment} id={this.props.id} type="Comment"/>
                 {
                     comments !== undefined && comments.length <= 0 && <p className="commentListInfo">No comments here !</p>
                 }
                 {
                     comments !== undefined && comments.map(comment => <Comment {...comment} key={comment.name + String(comment.ts)}/>)
                 }
+                <SendPostForm onSubmit={this.updateComments} submit={sendComment} id={this.props.id} type="Comment"/>
             </div>
         );
     }

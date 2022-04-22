@@ -68,3 +68,41 @@ button {
 .hidden {
   display: none;
 }
+
+
+
+/*
+  CRT Effect, adapted from : https://aleclownes.com/2017/02/01/crt-display.html
+  and https://dev.to/ekeijl/retro-crt-terminal-screen-in-css-js-4afh
+ */
+.crt::before, .crt::after {
+  content: "";
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  pointer-events: none;
+}
+
+.crt::before {
+  /*
+    Scanlines
+   */
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%),
+  linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  background-size: 100% 4px, 3px 100%;
+  z-index: 2;
+}
+
+.crt::after {
+  /*
+    Shadow and sheen
+   */
+  background-blend-mode: lighten;
+  background: radial-gradient(farthest-corner, transparent, transparent, transparent, black),
+              radial-gradient(circle at 75% 25%, rgba(255,255,255, 10%), transparent, transparent, transparent);
+  box-shadow : inset 0 0 0.5rem 0.5rem #222;
+  z-index: 3;
+}

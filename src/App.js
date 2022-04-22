@@ -19,7 +19,7 @@ class App extends React.Component {
     render()
     {
         return (
-            <div className="App">
+            <div className="App crt">
                 <Header checked={this.state.showImages} onImageClick={this.disableImages}/>
 
                 <main className="container">

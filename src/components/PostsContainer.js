@@ -13,7 +13,7 @@ export default class PostsContainer extends React.Component {
     autoReloadIntervalId;
     autoReloadInterval = 10000; // Set this to 1000 for almost-real-time refreshing ! Set this to 1 for real-time refreshing !
     isRetrievalInProgress = false;
-    lastTimeStamp = 1650609209815;
+    lastTimeStamp = 1650637833376;
 
     // Class given to information message
     infoTextClass = "listInfo info";
@@ -59,7 +59,16 @@ export default class PostsContainer extends React.Component {
     componentDidMount = () =>
     {
         this.retrievePosts();
-        this.autoReloadIntervalId = setInterval(() => this.retrievePosts(), this.autoReloadInterval);
+        if (this.autoReloadIntervalId === undefined)
+        {
+            this.autoReloadIntervalId = setInterval(() => this.retrievePosts(), this.autoReloadInterval);
+        }
+    }
+    componentWillUnmount()
+    {
+        if (this.autoReloadIntervalId !== undefined) {
+            clearInterval(this.autoReloadIntervalId);
+        }
     }
 
     onPostsRetrieved = data =>
