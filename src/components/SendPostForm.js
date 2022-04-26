@@ -23,9 +23,8 @@ export default class SendPostForm extends React.Component {
     render()
     {
         return(
-            <section className="write">
-                <h2 className="hidden">Send a post</h2>
-                <form action="" method="post" onSubmit={this.sendPost}>
+            <div className="write-container">
+                <form action="" method="post" onSubmit={this.sendPost} className="grid-layout">
                     <div className="group-name-button">
                         <div className="group-name">
                             <input type="text" minLength={3} maxLength={16} placeholder="Name" name="name"/>
@@ -38,8 +37,7 @@ export default class SendPostForm extends React.Component {
                     <textarea minLength={3} maxLength={256} name="message" placeholder={this.props.type} onChange={this.resize}/>
 
                 </form>
-
-            </section>
+            </div>
         );
     }
 

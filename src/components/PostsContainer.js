@@ -11,9 +11,9 @@ import {listPosts} from "../api/PostApi";
 
 export default class PostsContainer extends React.Component {
     autoReloadIntervalId;
-    autoReloadInterval = 10000; // Set this to 1000 for almost-real-time refreshing ! Set this to 1 for real-time refreshing !
+    autoReloadInterval = 10000; // Set this to 1000 for almost-real-time refreshing ! Set this to 1 for real-time refreshing ! Set this to -1 to get posts before they are written !
     isRetrievalInProgress = false;
-    lastTimeStamp = 1650637833376;
+    lastTimeStamp = 0;
 
     // Class given to information message
     infoTextClass = "listInfo info";
@@ -32,13 +32,34 @@ export default class PostsContainer extends React.Component {
 
     render()
     {
+        const {showImages, filters} = this.props
+        const {messages, infoText} = this.state;
+
+        // TODO : Display everything when no filter is set
+
+        let messagesToDisplay;
+
+        if (filters.length > 0)
+        {
+            messagesToDisplay = messages.filter(post => {
+                const text = post.message.toLowerCase();
+                return filters.every(trend => text.includes(trend.toLowerCase()));
+            });
+        }
+        else
+        {
+            messagesToDisplay = messages;
+        }
+
+        messagesToDisplay.sort((a,b) => b.ts - a.ts);
+
         return(
             <section className="read">
-                <h2 className="hidden">Read posts</h2>
-                <p className={this.infoTextClass}>{this.state.infoText}</p>
+                <h2 className="section-title">READ MESSAGES</h2>
+                <p className={this.infoTextClass}>{infoText}</p>
                 <div className="posts-container">
                 {
-                    this.state.messages.map(post => <Post key={post.id} {...post} showImages={this.props.showImages}/>)
+                    messagesToDisplay.map(post => <Post key={post.id} {...post} showImages={showImages}/>)
                 }
                 </div>
             </section>
@@ -66,9 +87,10 @@ export default class PostsContainer extends React.Component {
     }
     componentWillUnmount()
     {
-        if (this.autoReloadIntervalId !== undefined) {
+        // Causes the timer to never be active
+        /*if (this.autoReloadIntervalId !== undefined) {
             clearInterval(this.autoReloadIntervalId);
-        }
+        }*/
     }
 
     onPostsRetrieved = data =>

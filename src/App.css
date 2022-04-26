@@ -1,7 +1,7 @@
 :root {
-  --text-color: white;
+  --text-color: #ffffff;
   --name-color: orange;
-  --name-dim-color: #ae7000;
+  --name-dim-color: ffaaaa;
   --verified-color: palegreen;
   --dim-color: #7c7c7c;
   --good-color: green;
@@ -14,8 +14,12 @@
 
   --background-color: #111;
 
+  --grid-layout-mobile: 9.5rem 1fr;
+  --grid-layout-desktop: 20rem 1fr;;
+
   font-family: monospace;
-  font-size: clamp(0.8125rem, 2vw, 1.1875rem);
+  /*font-size: clamp(0.8125rem, 2vw, 1.1875rem);*/
+  font-size: clamp(0.8125rem, 2vw, 1.375rem);
 }
 
 * {
@@ -25,13 +29,26 @@
   /*outline: 1px solid red;*/
 }
 
+.grid-layout {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: var(--grid-layout-mobile);
+}
+
+@media screen and (min-width: 74rem) {
+  .grid-layout {
+    grid-template-columns: var(--grid-layout-desktop);
+  }
+}
+
 
 /*
   TODO : Find a way to hide focus box on click / show only on tab
  */
 :focus-visible {
-  outline: 1px dashed var(--text-color);
-
+  /*outline: 1px dashed var(--text-color);*/
+  outline: none;
+  box-shadow: inset var(--text-glow), var(--text-glow);
 }
 
 :focus:not(:focus-visible)
@@ -43,6 +60,11 @@
   max-width: 50rem;
   margin-left: auto;
   margin-right: auto;
+  padding-right: 1rem;
+}
+
+section {
+  margin-bottom: 2rem;
 }
 
 button {
@@ -69,6 +91,13 @@ button {
   display: none;
 }
 
+.section-title {
+  font-family: monospace;
+  font-weight: normal;
+  font-size: 100%;
+  margin-left: 2rem;
+}
+
 
 
 /*
@@ -92,17 +121,27 @@ button {
    */
   background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%),
   linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-  background-size: 100% 4px, 3px 100%;
+  background-size: 100% 4px, 6px 100%;
   z-index: 2;
+  animation: hue infinite 5s linear;
 }
 
 .crt::after {
   /*
     Shadow and sheen
    */
-  background-blend-mode: lighten;
-  background: radial-gradient(farthest-corner, transparent, transparent, transparent, black),
-              radial-gradient(circle at 75% 25%, rgba(255,255,255, 10%), transparent, transparent, transparent);
+  /*background-blend-mode: lighten;*/
+  background: radial-gradient(closest-corner, transparent, transparent, transparent, black),
+              radial-gradient(circle at 80% 20%, rgba(255,255,255, 5%), transparent, transparent, transparent, transparent, transparent, transparent, transparent);
   box-shadow : inset 0 0 0.5rem 0.5rem #222;
   z-index: 3;
+}
+
+@keyframes hue {
+  from {
+    filter: hue-rotate(0deg);
+  }
+  to {
+    filter: hue-rotate(360deg);
+  }
 }

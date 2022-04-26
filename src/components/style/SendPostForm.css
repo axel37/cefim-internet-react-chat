@@ -1,16 +1,9 @@
-section.write {
-    margin-top: 2rem;
-    margin-bottom: 2rem;
+.write-container {
     text-align: center;
 }
 
-form {
-    display: grid;
-    grid-template-columns: 9.5rem 1fr;
-    gap: 0.75rem;
-    /*align-items: flex-start;*/
-    /*justify-content: center;*/
-    margin-bottom: 1rem;
+.write button:hover {
+    color: var(--dim-color);
 }
 
 .group-name-button {
@@ -26,13 +19,6 @@ form {
     display: flex;
 }
 
-@media screen and (min-width: 61rem) {
-    form {
-        grid-template-columns: 20rem 1fr;
-    }
-}
-
-
 input[type=text], textarea {
     border: none;
     padding: 0;
@@ -46,6 +32,7 @@ input[type=text], textarea {
  */
 input[type=text]:focus, textarea:focus {
     outline: none;
+    box-shadow: none;
 }
 
 input[type=text] {
@@ -57,9 +44,19 @@ input[type=text] {
 .name-separator {
     user-select: none;
     color: var(--name-color);
+    animation: blink 0.5s infinite alternate ease-in-out;
 }
 
 textarea {
     font-family: monospace;
     resize: none;
+}
+
+@keyframes blink {
+    from {
+        opacity: 100%;
+    }
+    to {
+        opacity: 33%;
+    }
 }

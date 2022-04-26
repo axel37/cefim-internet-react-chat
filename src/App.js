@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import PostsContainer from "./components/PostsContainer";
 import SendPostForm from "./components/SendPostForm";
 import {sendPost} from "./api/PostApi";
+import TrendsContainer from "./components/TrendsContainer";
 
 class App extends React.Component {
 
@@ -12,19 +13,26 @@ class App extends React.Component {
     {
         super(props, context);
         this.state = {
-            "showImages": false
+            "showImages": false,
+            "filters": []
         };
     }
 
     render()
     {
+        const {showImages, filters} = this.state;
+
         return (
             <div className="App crt">
-                <Header checked={this.state.showImages} onImageClick={this.disableImages}/>
+                <Header checked={showImages} onImageClick={this.disableImages}/>
 
                 <main className="container">
-                    <SendPostForm submit={sendPost} type="Message"/>
-                    <PostsContainer showImages={this.state.showImages}/>
+                    <TrendsContainer onTrendClick={this.updateFilterList}/>
+                    <section className="write">
+                        <h2 className="section-title">WRITE A MESSAGE</h2>
+                        <SendPostForm submit={sendPost} type="Message"/>
+                    </section>
+                    <PostsContainer showImages={this.state.showImages} filters={filters}/>
                 </main>
             </div>
         );
@@ -35,6 +43,12 @@ class App extends React.Component {
         this.setState({
             "showImages": newState
         })
+    }
+
+    updateFilterList = array => {
+        this.setState({
+            "filters": array
+        });
     }
 }
 

@@ -56,7 +56,7 @@ export default class Post extends React.Component {
     {
         const {name, message, ts, is_user_authenticated} = this.props;
         const {isLiked, likeCount, commentCount} = this.state;
-        const postClass = is_user_authenticated ? "post authenticated" : "post"
+        const postClass = is_user_authenticated ? "post grid-layout authenticated" : "post grid-layout"
         const likeClass = isLiked ? "post-likes liked" : "post-likes";
 
         const dateString = new Date(ts).toLocaleDateString();

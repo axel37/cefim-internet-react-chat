@@ -4,20 +4,6 @@
 }
 
 .commentListInfo {
-    color: var(--dim-color);
+    /*color: var(--dim-color);*/
     text-align: right;
-    display: grid;
-    grid-template-columns: 9.5rem 1fr;
-    gap: 1.5rem;
-}
-
-.commentListInfo {
-
-}
-
-
-@media screen and (min-width: 61rem) {
-    .commentListInfo {
-        grid-template-columns: 20rem 1fr;
-    }
 }

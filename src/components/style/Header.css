@@ -3,3 +3,22 @@ header {
     margin-top: 2rem;
     margin-bottom: 4rem;
 }
+
+.themes-container {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.theme-switch:first-child:hover {
+    color: orange;
+}
+
+.theme-switch:nth-child(2):hover {
+    color: grey;
+}
+
+.theme-switch:nth-child(3):hover {
+    color: green;
+}

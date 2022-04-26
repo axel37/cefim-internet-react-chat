@@ -9,7 +9,7 @@ export default class Comment extends React.Component {
         // const timeString = new Date(ts).toLocaleTimeString();
 
         return(
-            <div className="comment">
+            <div className="comment grid-layout">
                 <div className="comment-meta">
                     <p className="comment-name">{name}</p>
                 </div>

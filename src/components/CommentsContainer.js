@@ -22,7 +22,7 @@ export default class CommentsContainer extends React.Component {
         return(
             <div className="comments-container">
                 {
-                    comments !== undefined && comments.length <= 0 && <p className="commentListInfo">No comments here !</p>
+                    comments !== undefined && comments.length <= 0 && <p className="commentListInfo grid-layout">WRITE THE FIRST COMMENT</p>
                 }
                 {
                     comments !== undefined && comments.map(comment => <Comment {...comment} key={comment.name + String(comment.ts)}/>)
@@ -31,6 +31,7 @@ export default class CommentsContainer extends React.Component {
             </div>
         );
     }
+
 
     updateComments = () => {
         getPostComments(this.props.id, this.onCommentsRetrieved, this.onCommentsRetrievalFailure);

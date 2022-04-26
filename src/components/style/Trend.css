@@ -1,0 +1,11 @@
+.Trend {
+    color: var(--dim-color);
+    font-family: monospace;
+}
+.Trend:hover {
+    color: var(--text-color);
+}
+
+.Trend.active {
+    color: var(--text-color);
+}

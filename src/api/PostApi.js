@@ -132,7 +132,7 @@ function getPost(id, onSuccess, onError) {
     Response (success) : Object :
     For each term, contains :
     - [Object] :
-        - XXX [Number] : Number of occurences for word "XXX"
+        - XXX [Number] : Number of occurrences for word "XXX"
  */
 function listTrends(onSuccess, onError) {
     apiGET("/trending", {}, onSuccess, onError);
@@ -365,7 +365,7 @@ function apiREQUEST(method, endPoint, paramsObj, onSuccess, onError)
  */
 function apiFetch(resource, options, onSuccess, onError)
 {
-    console.log("Fetching resource : " + resource);
+    console.log(new Date(Date.now()).toLocaleTimeString() +  " Fetching resource : " + resource);
 
     // Request execution
     // TODO : Use the error message provided by the API (how ??)
