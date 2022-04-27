@@ -24,3 +24,6 @@ yarn-error.log*
 
 # API URL must stay private
 /src/ApiUrl.js
+
+
+/.idea
