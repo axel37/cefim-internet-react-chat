@@ -41,6 +41,7 @@
 .post-message {
     display: inline;
     font-family: monospace;
+    word-break: break-word;
 }
 
 time {
@@ -67,4 +68,8 @@ time * {
 
 .liked:hover {
     color: var(--bad-color);
+}
+
+.post-comments.open {
+    color: var(--dim-color);
 }

@@ -32,13 +32,7 @@ export default class Post extends React.Component {
     // Class given to information message
     infoTextClass = "postInfo info";
     infoTextTimeout;
-
-    comments = [
-        // {"name": "Randall", "comment": "What a wonderful comment !", "ts": 1650609209815},
-        // {"name": "Gabe", "comment": "Look at this !", "ts": 1650609209814},
-        // {"name": "Dario", "comment": "I love this post. It's so insightful, I had never though about things that way ! Thank you so much !", "ts": 1650609209813},
-        // {"name": "Eric", "comment": "Sup", "ts": 1650609209812}
-    ];
+    commentButtonClass = "post-comments"
 
     constructor(props, context)
     {
@@ -54,10 +48,11 @@ export default class Post extends React.Component {
 
     render()
     {
-        const {name, message, ts, is_user_authenticated} = this.props;
-        const {isLiked, likeCount, commentCount} = this.state;
+        const {name, message, ts, is_user_authenticated, showImages} = this.props;
+        const {isLiked, likeCount, commentCount, showComments, infoText} = this.state;
         const postClass = is_user_authenticated ? "post grid-layout authenticated" : "post grid-layout"
         const likeClass = isLiked ? "post-likes liked" : "post-likes";
+        this.commentButtonClass = showComments ? "post-comments open" : "post-comments";
 
         const dateString = new Date(ts).toLocaleDateString();
         const timeString = new Date(ts).toLocaleTimeString();
@@ -69,7 +64,7 @@ export default class Post extends React.Component {
                         <p className="post-name">{name}</p>
                         <div className="post-meta-group-bottom">
                             {
-                                this.props.showImages && <img src={avatar} alt={name + "'s profile picture"}/>
+                                showImages && <img src={avatar} alt={name + "'s profile picture"}/>
                             }
                             <div className="post-meta-group-bottom-text">
                                 <time dateTime={ts}>
@@ -77,10 +72,10 @@ export default class Post extends React.Component {
                                     <span>{timeString}</span>
                                 </time>
                                 <button className={likeClass} onClick={this.likePost}>Like : {likeCount}</button>
-                                <button className="post-comments" onClick={this.toggleComments}>Comment : {commentCount}</button>
+                                <button className={this.commentButtonClass} onClick={this.toggleComments}>Comment : {commentCount}</button>
                             </div>
                         </div>
-                        <p className={this.infoTextClass}>{this.state.infoText}</p>
+                        <p className={this.infoTextClass}>{infoText}</p>
                     </div>
                     <p className="post-message">{message}</p>
                 </div>

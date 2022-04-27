@@ -5,7 +5,6 @@
     This file will implement methods such as sendPost.
  */
 
-import ApiUrl from "../ApiUrl";
 import apiUrl from "../ApiUrl";
 
 export {listPosts, sendPost, getPost, listTrends, toggleLike, getPostComments, sendComment};
@@ -51,7 +50,7 @@ function listPosts(ts, onSuccess, onError) {
     }
 
     // Fetch resource
-    apiGET("/list", {"ts": timeStamp}, onSuccess, onError);
+    apiGETRequest("/list", {"ts": timeStamp}, onSuccess, onError);
 }
 
 /*
@@ -75,7 +74,7 @@ function sendPost(name, message, onSuccess, onError) {
 
     if (author.length >= 3 && author.length <= 16 && post.length >= 3 && post.length <= 256)
     {
-        apiREQUEST("POST", "/send", {"name": author, "message": post}, onSuccess, onError)
+        apiRequest("POST", "/send", {"name": author, "message": post}, onSuccess, onError)
     }
     else
     {
@@ -119,7 +118,7 @@ function getPost(id, onSuccess, onError) {
         return false;
     }
 
-    apiGET("/get", {"id": postId}, onSuccess, onError);
+    apiGETRequest("/get", {"id": postId}, onSuccess, onError);
 }
 
 /*
@@ -135,7 +134,7 @@ function getPost(id, onSuccess, onError) {
         - XXX [Number] : Number of occurrences for word "XXX"
  */
 function listTrends(onSuccess, onError) {
-    apiGET("/trending", {}, onSuccess, onError);
+    apiGETRequest("/trending", {}, onSuccess, onError);
 }
 
 /*
@@ -198,7 +197,7 @@ function toggleLike(id, isLiked, onSuccess, onError) {
         - error [string] : Error message.
  */
 function addLike(id, onSuccess, onError) {
-    apiREQUEST("PUT", "/likes/send", {"message_id": id}, onSuccess, onError);
+    apiRequest("PUT", "/likes/send", {"message_id": id}, onSuccess, onError);
 }
 
 
@@ -218,7 +217,7 @@ function addLike(id, onSuccess, onError) {
         - error [string] : Error message.
  */
 function removeLike(id, onSuccess, onError) {
-    apiREQUEST("DELETE", "/likes/remove", {"message_id": id}, onSuccess, onError);
+    apiRequest("DELETE", "/likes/remove", {"message_id": id}, onSuccess, onError);
 }
 
 /*
@@ -273,7 +272,7 @@ function getPostComments(message_id, onSuccess, onError) {
         onError("Provided id needs to be an positive integer.")
         return false;
     }
-    apiGET("/comments/list", {"message_id": postId}, onSuccess, onError);
+    apiGETRequest("/comments/list", {"message_id": postId}, onSuccess, onError);
 }
 
 /*
@@ -307,7 +306,7 @@ function sendComment(name, message, onSuccess, onError, message_id) {
 
     if (author.length >= 3 && author.length <= 16 && post.length >= 3 && post.length <= 256)
     {
-        apiREQUEST("POST", "/comments/send", {"message_id": postId, "name": author, "comment": post}, onSuccess, onError)
+        apiRequest("POST", "/comments/send", {"message_id": postId, "name": author, "comment": post}, onSuccess, onError)
     }
     else
     {
@@ -323,7 +322,7 @@ function sendComment(name, message, onSuccess, onError, message_id) {
     - onSuccess : Called on fetch success. Function is passed the response json.
     - onError. Called on fetch failure. Function is passed error message.
 */
-function apiGET(endPoint, paramsObj, onSuccess, onError)
+function apiGETRequest(endPoint, paramsObj, onSuccess, onError)
 {
     // Request setup
     let paramString = buildRequestString(endPoint, paramsObj, "GET");
@@ -342,10 +341,10 @@ function apiGET(endPoint, paramsObj, onSuccess, onError)
     - onSuccess : Called on fetch success. Function is passed the response json.
     - onError. Called on fetch failure. Function is passed error message.
 */
-function apiREQUEST(method, endPoint, paramsObj, onSuccess, onError)
+function apiRequest(method, endPoint, paramsObj, onSuccess, onError)
 {
     // Request setup
-    const resourceUrl = ApiUrl + endPoint;
+    const resourceUrl = apiUrl + endPoint;
     const paramString = buildRequestString(endPoint, paramsObj, "POST");
     const fetchOptions = {
         "method": method.toUpperCase(),
